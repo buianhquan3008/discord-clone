@@ -4,7 +4,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import http from 'http';
 import * as dotenv from 'dotenv';
-import socket from 'socket.io'
+import { Server } from 'socket.io'
 
 dotenv.config();
 
@@ -34,8 +34,31 @@ db.on('error', (err) => {
   process.exit(-1);
 });
 
+const io = new Server(server, { });
+
+io.on("connection", (socket) => {
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    socket.emit("connected");
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+  });
+
+  socket.on("new message", (recievedMessage) => {
+    var chat = recievedMessage.chat;
+    chat.users.forEach((user) => {
+      if (user == recievedMessage.sender._id) return;
+      socket.in(user).emit("message recieved", recievedMessage);
+    });
+  });
+
+  socket.off("setup", (userData) => {
+    socket.leave(userData._id);
+  });
+});
+
 server.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
-
-// const io = socket.listen(server);
