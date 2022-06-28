@@ -22,53 +22,56 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Healthy');
 });
 
-// const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
-// const server = http.createServer(app);
+const server = http.createServer(app);
 
-// mongoose.connect(process.env.URI || '');
+mongoose.connect(process.env.URI || '');
 
-// const db = mongoose.connection;
-// db.on('error', (err) => {
-//   console.log(err);
-//   process.exit(-1);
-// });
+const db = mongoose.connection;
+db.on('error', (err) => {
+  console.log(err);
+  process.exit(-1);
+});
 
-// const io = new Server(server, { });
+const io = new Server(server, { });
 
-// io.on("connection", (socket) => {
-//   socket.on("setup", (userData) => {
-//     socket.join(userData._id);
-//     socket.emit("connected");
-//   });
+io.on("connection", (socket) => {
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    socket.emit("connected");
+  });
 
-//   socket.on("join chat", (room) => {
-//     socket.join(room);
-//   });
+  socket.on("join chat", (room) => {
+    socket.join(room);
+  });
 
-//   socket.on("new message", (recievedMessage) => {
-//     var chat = recievedMessage.chat;
-//     chat.users.forEach((user) => {
-//       if (user == recievedMessage.sender._id) return;
-//       socket.in(user).emit("message recieved", recievedMessage);
-//     });
-//   });
+  socket.on("new message", (recievedMessage) => {
+    var chat = recievedMessage.chat;
+    chat.users.forEach((user) => {
+      if (user == recievedMessage.sender._id) return;
+      socket.in(user).emit("message recieved", recievedMessage);
+    });
+  });
 
-//   socket.off("setup", (userData) => {
-//     socket.leave(userData._id);
-//   });
-// });
+  socket.off("setup", (userData) => {
+    socket.leave(userData._id);
+  });
+});
 
-// server.listen(PORT, () => {
-//   console.log(`Server is running on PORT ${PORT}`);
-// });
+server.listen(PORT, () => {
+  console.log(`Server is running on PORT ${PORT}`);
+});
 
 import WebSocket from 'ws';
 
-const wss = new WebSocket.Server({ port: 8082 });
-wss.on('connection', ws => {
-  console.log('New client conected!');
-  ws.on('close', () => {
-    console.log('Client disconected');
+const wss = new WebSocket.Server({ port: 8085 });
+wss.on('connection', client => {
+  client.on('message', (data, isBinary) => {
+    [...wss.clients].filter(c => c != client).forEach( c => c.send(isBinary ? data.toString() : data ));
   })
+  // client.on('close', () => {
+  //   console.log('Client disconected');
+  // })
+  // client.send('hus')
 })
