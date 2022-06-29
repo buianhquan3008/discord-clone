@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import http from 'http';
 import * as dotenv from 'dotenv';
 import { Server } from 'socket.io'
+// Router
+import userRouter from './routes/user'
 
 dotenv.config();
 
@@ -17,6 +19,9 @@ app.use(cors({ origin: true }));
 
 //  if you want only your frontend to connect
 app.use(cors({ origin: 'http://localhost:3000' }));
+
+// user api
+app.use('/api', userRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Healthy');

@@ -42,7 +42,7 @@ UserSchema.pre('save', function (next) {
   return next();
 });
 
-UserSchema.methods.checkPassword = function (password) {
+UserSchema.methods.checkPassword = function (password: String) {
   return bcrypt.compareSync(password, this.password);
 };
 
@@ -52,6 +52,7 @@ interface UserInterface extends Document {
   password: String | undefined;
   pic: String;
   isAdmin: Boolean;
+  checkPassword: (password: String) => Boolean;
 }
 
 let UserModel = mongoose.model<UserInterface>('user', UserSchema);
