@@ -3,6 +3,8 @@ import {
   getAllUsers as getAllUsersService,
   getDetailUser as getDetailUserService, 
   login as loginService,
+  signup as signupService,
+  UserType,
 } from '../services/user';
 
 /**
@@ -37,10 +39,10 @@ const getDetailUser = async (req: Request, res: Response, next: NextFunction) =>
 
 /**
  * login 
- * @param email
- * @param password
+ * @param req
+ * @param res
+ * @param next
  */
-
 async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password } = req.body;
@@ -51,8 +53,22 @@ async function login(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+/**
+ * signup 
+ * @param req
+ * @param res
+ * @param next
+ */
+async function signup(req: Request, res: Response, next: NextFunction) {
+  const { email, password, name, pic, isAdmin } = req.body;
+  const user: UserType = { email, password, name, pic, isAdmin };
+  const newUser = await signupService(user);
+  res.json(newUser);
+}
+
 export {
   getAllUsers,
   getDetailUser,
   login,
+  signup,
 }

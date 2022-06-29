@@ -35,12 +35,12 @@ const UserSchema = new Schema(
   }
 );
 
-UserSchema.pre('save', function (next) {
-  if (!this.isModified('password')) return next();
-  const hash = bcrypt.hashSync(this.password, 8);
-  this.password = hash;
-  return next();
-});
+// UserSchema.pre('save', function (next) {
+//   if (!this.isModified('password')) return next();
+//   const hash = bcrypt.hashSync(this.password, 8);
+//   this.password = hash;
+//   return next();
+// });
 
 UserSchema.methods.checkPassword = function (password: String) {
   return bcrypt.compareSync(password, this.password);
