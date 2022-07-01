@@ -31,8 +31,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: discord-clone-server
-          environment_name: Discordcloneserver-env
-          version_label: "the-discord-clone-${{ steps.format-time.outputs.replaced }}"
+          application_name: discord-clone
+          environment_name: Discordclone-env
+          version_label: "the-discord-clone-sv-${{ steps.format-time.outputs.replaced }}"
           region: us-east-1
           deployment_package: deploy.zip
