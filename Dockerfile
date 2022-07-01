@@ -1,4 +1,5 @@
-FROM node:14 AS builder
+# FROM node:buster AS builder
+FROM node:buster
 WORKDIR /app
 COPY package.json ./
 RUN npm install 
