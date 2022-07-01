@@ -9,6 +9,9 @@ jobs:
     steps:
       - name: Checkout Latest Repo
         uses: actions/checkout@master
+      
+      - name: Install package
+        run: npm install 
         
       - name: Build ts
         run: npm run build
