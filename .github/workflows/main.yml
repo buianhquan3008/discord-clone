@@ -10,7 +10,10 @@ jobs:
       - name: Checkout Latest Repo
         uses: actions/checkout@master
         
-      - name: Generate Deployment Package 
+      - name: Build ts
+        run: npm run build
+        
+      - name: Generate Deployment Package
         run: zip -r deploy.zip * -x "**node_modules**"
         
       - name: Get timestamp
