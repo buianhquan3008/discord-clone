@@ -31,7 +31,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
-    "start": "cross-env PORT=8000 URI=mongodb+srv://quan:buianhquan308@cluster0.hzefrzv.mongodb.net/discord-clone?retryWrites=true&w=majority node dist/index.js",
+    "start": "node dist/index.js",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/test/**/*.ts'"
   },
