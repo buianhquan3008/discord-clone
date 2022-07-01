@@ -27,12 +27,12 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Healthy');
 });
 
-const PORT = process.env.PORT || 8000;
-
+// const PORT = process.env.PORT || 8000;
+const PORT = 8000;
 const server = http.createServer(app);
 
-mongoose.connect(process.env.URI || '');
-
+// mongoose.connect(process.env.URI || '');
+mongoose.connect('mongodb+srv://quan:buianhquan308@cluster0.hzefrzv.mongodb.net/discord-clone?retryWrites=true&w=majority')
 const db = mongoose.connection;
 db.on('error', (err) => {
   console.log(err);
