@@ -17,6 +17,20 @@ const getDetailUser = {
   }),
 };
 
+
+// TODO: For pagination
+// const getUsers = {
+//   query: Joi.object().keys({
+//     name: Joi.string(),
+//     role: Joi.string(),
+//     sortBy: Joi.string(),
+//     limit: Joi.number().integer(),
+//     page: Joi.number().integer(),
+//   }),
+// };
+
+
 export {
+  createUser,
   getDetailUser,
 };
