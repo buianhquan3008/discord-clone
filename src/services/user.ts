@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
  * get all users
  */
 async function getAllUsers() {
-  return await User.find({ });
+  return await User.find({});
 }
 
 /**
@@ -13,14 +13,14 @@ async function getAllUsers() {
  * @param useId
  */
 async function getDetailUser(useId: String) {
-  return await User.findById(useId)
+  return await User.findById(useId);
 }
 
 /**
  * login
- * @param email 
- * @param password 
- * @returns 
+ * @param email
+ * @param password
+ * @returns
  */
 async function login(email: String, password: String) {
   let user = await User.findOne({ email });
@@ -42,15 +42,9 @@ async function signup(user: UserType) {
   const { email } = user;
   let existUser = await User.findOne({ email });
   if (existUser) throw Error('email exist');
-  const newUser = new User(user); 
+  const newUser = new User(user);
   newUser.save();
   return newUser;
 }
 
-export {
-  getAllUsers,
-  getDetailUser,
-  login,
-  signup,
-  UserType,
-}
+export { getAllUsers, getDetailUser, login, signup, UserType };

@@ -1,44 +1,52 @@
-name: Deployment From Github To AWS
-on:
-  push:
-    branches:
-      - main
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Latest Repo
-        uses: actions/checkout@master
+# name: Deployment From Github To AWS
+# on:
+#   push:
+#     branches:
+#       - main
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Latest Repo
+#         uses: actions/checkout@master
       
-      - name: Install package
-        run: npm install 
+#       - name: Install package
+#         run: npm install 
+      
+#       - name: Run test
+#         run: npm test
         
-      - name: Build ts
-        run: npm run build
+      # - name: Build ts
+      #   run: npm run build
         
+<<<<<<< HEAD
       - name: Generate Deployment Package
         run: zip -r deploy.zip * -x "**node_modules**" -x "**src**"
+=======
+#       - name: Generate Deployment Package
+#         run: zip -r deploy.zip * -x "**node_modules**"
+>>>>>>> validate middleware
         
-      - name: Get timestamp
-        uses: gerred/actions/current-time@master
-        id: current-time
+#       - name: Get timestamp
+#         uses: gerred/actions/current-time@master
+#         id: current-time
         
-      - name: Run string replace
-        uses: frabert/replace-string-action@master
-        id: format-time
-        with:
-          pattern: '[:\.]+'
-          string: "${{ steps.current-time.outputs.time }}"
-          replace-with: '-'
-          flags: 'g'
+#       - name: Run string replace
+#         uses: frabert/replace-string-action@master
+#         id: format-time
+#         with:
+#           pattern: '[:\.]+'
+#           string: "${{ steps.current-time.outputs.time }}"
+#           replace-with: '-'
+#           flags: 'g'
           
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v14
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: discord-clone
-          environment_name: Discordclone-env
-          version_label: "the-discord-clone-sv-${{ steps.format-time.outputs.replaced }}"
-          region: us-east-1
-          deployment_package: deploy.zip
+#       - name: Deploy to EB
+#         uses: einaregilsson/beanstalk-deploy@v14
+#         with:
+#           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           application_name: discord-clone
+#           environment_name: Discordclone-env
+#           version_label: "the-discord-clone-sv-${{ steps.format-time.outputs.replaced }}"
+#           region: us-east-1
+#           deployment_package: deploy.zip

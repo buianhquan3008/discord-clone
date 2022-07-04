@@ -1,12 +1,12 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import http from 'http';
 import * as dotenv from 'dotenv';
-import { Server } from 'socket.io'
+import { Server } from 'socket.io';
 // Router
-import userRouter from './routes/user'
+import userRouter from './routes/user';
 
 dotenv.config();
 
@@ -27,39 +27,49 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Healthy');
 });
 
+app.use((error, req: Request, res: Response, next: NextFunction) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
+
 // const PORT = process.env.PORT || 8000;
 const PORT = 8000;
 const server = http.createServer(app);
 
 // mongoose.connect(process.env.URI || '');
-mongoose.connect('mongodb+srv://quan:buianhquan308@cluster0.hzefrzv.mongodb.net/discord-clone?retryWrites=true&w=majority')
+mongoose.connect(
+  'mongodb+srv://quan:buianhquan308@cluster0.hzefrzv.mongodb.net/discord-clone?retryWrites=true&w=majority'
+);
 const db = mongoose.connection;
 db.on('error', (err) => {
   console.log(err);
   process.exit(-1);
 });
 
-const io = new Server(server, { });
+const io = new Server(server, {});
 
-io.on("connection", (socket) => {
-  socket.on("setup", (userData) => {
+io.on('connection', (socket) => {
+  socket.on('setup', (userData) => {
     socket.join(userData._id);
-    socket.emit("connected");
+    socket.emit('connected');
   });
 
-  socket.on("join chat", (room) => {
+  socket.on('join chat', (room) => {
     socket.join(room);
   });
 
-  socket.on("new message", (recievedMessage) => {
+  socket.on('new message', (recievedMessage) => {
     var chat = recievedMessage.chat;
     chat.users.forEach((user) => {
       if (user == recievedMessage.sender._id) return;
-      socket.in(user).emit("message recieved", recievedMessage);
+      socket.in(user).emit('message recieved', recievedMessage);
     });
   });
 
-  socket.off("setup", (userData) => {
+  socket.off('setup', (userData) => {
     socket.leave(userData._id);
   });
 });
@@ -71,12 +81,14 @@ server.listen(PORT, () => {
 import WebSocket from 'ws';
 
 const wss = new WebSocket.Server({ port: 8085 });
-wss.on('connection', client => {
+wss.on('connection', (client) => {
   client.on('message', (data, isBinary) => {
-    [...wss.clients].filter(c => c != client).forEach( c => c.send(isBinary ? data.toString() : data ));
-  })
+    [...wss.clients]
+      .filter((c) => c != client)
+      .forEach((c) => c.send(isBinary ? data.toString() : data));
+  });
   // client.on('close', () => {
   //   console.log('Client disconected');
   // })
   // client.send('hus')
-})
+});
