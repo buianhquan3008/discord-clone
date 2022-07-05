@@ -38,6 +38,11 @@ type UserType = {
   isAdmin?: Boolean;
 };
 
+/**
+ * signup (Create new user)
+ * @param user 
+ */
+
 async function signup(user: UserType) {
   const { email } = user;
   let existUser = await User.findOne({ email });

@@ -12,7 +12,7 @@ import { assert } from 'chai';
 
 describe('my awesome project', () => {
   let io, serverSocket, clientSocket;
-  console.log('kkkkkkkkk')
+  // console.log('kkkkkkkkk')
   before((done) => {
     const httpServer = createServer();
     io = new Server(httpServer);
