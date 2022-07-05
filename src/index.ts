@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 import { Server } from 'socket.io';
 // Router
 import userRouter from './routes/user';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -20,6 +21,18 @@ app.use(cors({ origin: true }));
 //  if you want only your frontend to connect
 app.use(cors({ origin: 'http://localhost:3000' }));
 
+// Request logger
+// TODO: create a rotating write stream
+// const accessLogStream = createStream("access.log", {
+//   size: "10M",
+//   interval: "1d", // rotate daily
+//   path: path.join(__dirname, "../log"),
+// });
+
+// setup the logger
+morgan.token("real-ip", (req) => req.headers["x-forwarded-for"]?.toString() || req.socket.remoteAddress || undefined);
+// app.use(morgan(":real-ip - :remote-user [:date[clf]] \":method :url HTTP/:http-version\" :status :res[content-length] \":referrer\" \":user-agent\"", {  }));
+app.use(morgan(":real-ip [:date[clf]] :method :url :status :response-time ms - :res[content-length]"));
 // user api
 app.use('/api', userRouter);
 

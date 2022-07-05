@@ -1,26 +1,40 @@
-# name: Deployment From Github To AWS
-# on:
-#   push:
-#     branches:
-#       - main
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout Latest Repo
-#         uses: actions/checkout@master
+name: Deployment From Github To AWS
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        mongodb-version: ['4.2', '4.4', '5.0']
+    steps:
+      - name: Checkout Latest Repo
+        uses: actions/checkout@master
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      - name: Install package
+        run: npm install 
       
-#       - name: Install package
-#         run: npm install 
-      
-#       - name: Run test
-#         run: npm test
+      - name: Run test
+        run: npm test
         
       # - name: Build ts
       #   run: npm run build
         
       # - name: Generate Deployment Package
-      #   run: zip -r deploy.zip * -x "**node_modules**" -x "**src**"
+      #   run: zip -r deploy.zip * -x "**node_modules**"
         
 #       - name: Get timestamp
 #         uses: gerred/actions/current-time@master
