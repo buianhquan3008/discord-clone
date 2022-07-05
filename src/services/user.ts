@@ -52,4 +52,23 @@ async function signup(user: UserType) {
   return newUser;
 }
 
-export { getAllUsers, getDetailUser, login, signup, UserType };
+/**
+ * authenticate
+ * @param email 
+ * @param password 
+ * @returns 
+ */
+
+async function authenticate(email, password) {
+  let user = await User.findOne({ email });
+  if (!user) return null;
+  let match = user.checkPassword(password);
+  if (match) {
+    // const { password, ...userWithoutPassword } = user;
+    // return userWithoutPassword;
+    return user;
+  }
+  return null;
+}
+
+export { UserType, getAllUsers, getDetailUser, login, signup, authenticate };
