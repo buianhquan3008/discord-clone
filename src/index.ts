@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import multer from 'multer';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import http from 'http';
@@ -12,8 +13,11 @@ dotenv.config();
 
 const app: Application = express();
 
-app.use(bodyParser.json());
+const upload = multer();
+app.use(upload.array('')); 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 // if you want anyone to be able to connect
 app.use(cors({ origin: true }));
 
