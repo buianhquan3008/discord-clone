@@ -38,7 +38,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/test/**/*.ts'"
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/test/**/*.ts' --timeout 10000"
   },
   "repository": {
     "type": "git",
