@@ -1,15 +1,15 @@
-import { Request, Response, NextFunction } from "express";
-import { 
+import { Request, Response, NextFunction } from 'express';
+import {
   getAllUsers as getAllUsersService,
-  getDetailUser as getDetailUserService, 
+  getDetailUser as getDetailUserService,
   login as loginService,
   signup as signupService,
-  UserType,
+  UserType
 } from '../services/user';
 
 /**
  * Get user list
- * @param req 
+ * @param req
  * @param res
  * @param next
  */
@@ -20,25 +20,29 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 /**
  * Get detail user
- * @param req 
+ * @param req
  * @param res
  * @param next
  */
-const getDetailUser = async (req: Request, res: Response, next: NextFunction) => {
+const getDetailUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const user = await getDetailUserService(req.params.userId);
     res.json(user);
   } catch (err) {
     next(err);
   }
-}
+};
 
 /**
- * login 
+ * login
  * @param req
  * @param res
  * @param next
@@ -49,12 +53,12 @@ async function login(req: Request, res: Response, next: NextFunction) {
     const user = await loginService(email, password);
     res.json(user);
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
 
 /**
- * signup 
+ * signup
  * @param req
  * @param res
  * @param next
@@ -66,9 +70,4 @@ async function signup(req: Request, res: Response, next: NextFunction) {
   res.json(newUser);
 }
 
-export {
-  getAllUsers,
-  getDetailUser,
-  login,
-  signup,
-}
+export { getAllUsers, getDetailUser, login, signup };

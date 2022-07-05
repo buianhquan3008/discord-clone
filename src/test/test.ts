@@ -1,8 +1,8 @@
 // with { "type": "module" } in your package.json
-import { createServer } from "http";
-import { io as Client } from "socket.io-client";
-import { Server } from "socket.io";
-import { assert } from "chai";
+import { createServer } from 'http';
+import { io as Client } from 'socket.io-client';
+import { Server } from 'socket.io';
+import { assert } from 'chai';
 
 // with { "type": "commonjs" } in your package.json
 // const { createServer } = require("http");
@@ -10,22 +10,21 @@ import { assert } from "chai";
 // const Client = require("socket.io-client");
 // const assert = require("chai").assert;
 
-describe("my awesome project", () => {
+describe('my awesome project', () => {
   let io, serverSocket, clientSocket;
-
+  // console.log('kkkkkkkkk')
   before((done) => {
     const httpServer = createServer();
     io = new Server(httpServer);
     httpServer.listen(9000, () => {
       const port = 9000;
       clientSocket = Client(`http://localhost:${port}`);
-      io.on("connection", (socket: any) => {
+      io.on('connection', (socket: any) => {
         serverSocket = socket;
       });
       // console.log(clientSocket);
-      clientSocket.on("connect", done);
+      clientSocket.on('connect', done);
     });
-   
   });
 
   after(() => {
@@ -33,20 +32,20 @@ describe("my awesome project", () => {
     clientSocket.close();
   });
 
-  it("should work", (done) => {
-    clientSocket.on("hello", (arg) => {
-      assert.equal(arg, "world");
+  it('should work', (done) => {
+    clientSocket.on('hello', (arg) => {
+      assert.equal(arg, 'world');
       done();
     });
-    serverSocket.emit("hello", "world");
+    serverSocket.emit('hello', 'world');
   });
 
-  it("should work (with ack)", (done) => {
-    serverSocket.on("hi", (cb) => {
-      cb("hola");
+  it('should work (with ack)', (done) => {
+    serverSocket.on('hi', (cb) => {
+      cb('hola');
     });
-    clientSocket.emit("hi", (arg) => {
-      assert.equal(arg, "hola");
+    clientSocket.emit('hi', (arg) => {
+      assert.equal(arg, 'hola');
       done();
     });
   });
