@@ -11,13 +11,17 @@ class Session {
 
   // we'll use this method later to determine if the session has expired
   isExpired() {
-      this.expiresAt < (new Date())
+    return this.expiresAt < (new Date())
   }
 }
 
 const SessionSchema = new Schema(
   {
-    sessionToken: {
+    token: {
+      type: String,
+      required: true
+    },
+    session: {
       type: Object,
       required: true
     },
@@ -26,7 +30,8 @@ const SessionSchema = new Schema(
 );
 
 interface SessionInterface extends Document {
-
+  token: String;
+  session: Object;
 }
 
 let SessionModel = mongoose.model<SessionInterface>('sessions', SessionSchema);

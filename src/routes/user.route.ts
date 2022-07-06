@@ -3,7 +3,7 @@ import { getAllUsers, getDetailUser, login, signup } from '../controllers/user.c
 import { getDetailUser as getDetailUserValidation } from '../validations/user';
 import validate from '../middlewares/validate';
 import basicAuth from '../middlewares/basicAuth';
-import { loginHandler } from '../controllers/sessionCookeiAuth.controller';
+import { loginHandler, getAllUsersHandler } from '../controllers/sessionCookeiAuth.controller';
 
 const userRouter = Router({ mergeParams: true });
 
@@ -12,6 +12,9 @@ userRouter.get('/users', basicAuth, getAllUsers);
 userRouter.get('/user/:userId', validate(getDetailUserValidation), getDetailUser);
 userRouter.post('/login', login);
 userRouter.post('/signup', signup);
+
+// session 
 userRouter.post('/login-session', loginHandler);
+userRouter.get('/session/users', getAllUsersHandler);
 
 export default userRouter;

@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 import http from 'http';
 import * as dotenv from 'dotenv';
 import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
+
 // Router
 import userRouter from './routes/user.route';
 import morgan from 'morgan';
@@ -18,6 +20,7 @@ const upload = multer();
 app.use(upload.array('')); 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // if you want anyone to be able to connect
 app.use(cors({ origin: true }));
