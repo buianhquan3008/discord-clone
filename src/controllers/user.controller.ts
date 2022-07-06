@@ -5,7 +5,7 @@ import {
   login as loginService,
   signup as signupService,
   UserType
-} from '../services/user';
+} from '../services/user.service';
 
 /**
  * Get user list

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticate } from '../services/user';
+import { authenticate } from '../services/user.service';
 
 interface ApiRequest extends Request {
   [key: string]: any;

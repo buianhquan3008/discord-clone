@@ -1,4 +1,4 @@
-import User, { UserInterface } from '../models/user';
+import User, { UserInterface } from '../models/user.model';
 import mongoose from 'mongoose';
 
 /**

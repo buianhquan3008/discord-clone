@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import mongoose from 'mongoose';
-import { signup, getAllUsers } from '../services/user'
+import { signup, getAllUsers } from '../services/user.service'
 
 let db;
 before(async () => {

@@ -7,7 +7,7 @@ import http from 'http';
 import * as dotenv from 'dotenv';
 import { Server } from 'socket.io';
 // Router
-import userRouter from './routes/user';
+import userRouter from './routes/user.route';
 import morgan from 'morgan';
 
 dotenv.config();
