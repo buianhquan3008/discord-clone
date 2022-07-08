@@ -12,6 +12,9 @@ import cookieParser from 'cookie-parser';
 import userRouter from './routes/user.route';
 import morgan from 'morgan';
 
+//Session clear 
+import { clearSessionExpired } from "./controllers/sessionCookeiAuth.controller"
+
 dotenv.config();
 
 const app: Application = express();
@@ -68,6 +71,11 @@ db.on('error', (err) => {
   console.log(err);
   process.exit(-1);
 });
+
+// clear session (no package) 
+setInterval(async function(){
+  await clearSessionExpired()
+}, 300000);
 
 const io = new Server(server, {});
 

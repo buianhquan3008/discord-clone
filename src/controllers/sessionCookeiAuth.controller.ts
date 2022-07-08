@@ -17,7 +17,6 @@ async function loginHandler(req: Request, res: Response, next: NextFunction) {
     return res.status(401).json({ error: 'Password is wrong'});
   } 
   const sessionToken = v4();
-  console.log(sessionToken)
 
   // set the expiry time as 120s after the current time
   const now = new Date();
@@ -101,8 +100,17 @@ async function logoutHandler(req: Request, res: Response, next: NextFunction) {
   return res.status(200).json({ message: 'logout success' })
 }
 
+async function clearSessionExpired() {
+  return await SessionModel.deleteMany({ 
+    "session.expiresAt": { 
+      $lt: (new Date())
+    } 
+  })
+}
+
 export {
   loginHandler,
   getAllUsersHandler,
   logoutHandler,
+  clearSessionExpired,
 }
