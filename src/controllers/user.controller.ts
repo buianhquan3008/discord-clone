@@ -16,7 +16,7 @@ import {
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await getAllUsersService();
-    res.json(users);
+    return res.json(users);
   } catch (err) {
     next(err);
   }
@@ -35,7 +35,7 @@ const getDetailUser = async (
 ) => {
   try {
     const user = await getDetailUserService(req.params.userId);
-    res.json(user);
+    return res.json(user);
   } catch (err) {
     next(err);
   }
@@ -51,7 +51,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password } = req.body;
     const user = await loginService(email, password);
-    res.json(user);
+    return res.json(user);
   } catch (err) {
     next(err);
   }
@@ -67,7 +67,7 @@ async function signup(req: Request, res: Response, next: NextFunction) {
   const { email, password, name, pic, isAdmin } = req.body;
   const user: UserType = { email, password, name, pic, isAdmin };
   const newUser = await signupService(user);
-  res.json(newUser);
+  return res.json(newUser);
 }
 
 export { getAllUsers, getDetailUser, login, signup };
