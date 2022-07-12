@@ -89,11 +89,11 @@ io.on('connection', (socket) => {
     socket.join(room);
   });
 
-  socket.on('new message', (recievedMessage) => {
-    var chat = recievedMessage.chat;
+  socket.on('new message', (receivedMessage) => {
+    var chat = receivedMessage.chat;
     chat.users.forEach((user) => {
-      if (user == recievedMessage.sender._id) return;
-      socket.in(user).emit('message recieved', recievedMessage);
+      if (user == receivedMessage.sender._id) return;
+      socket.in(user).emit('message received', receivedMessage);
     });
   });
 

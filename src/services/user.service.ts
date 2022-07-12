@@ -10,10 +10,10 @@ async function getAllUsers() {
 
 /**
  * get detail user
- * @param useId
+ * @param userId
  */
-async function getDetailUser(useId: String) {
-  return await User.findById(useId);
+async function getDetailUser(userId: String) {
+  return await User.findById(userId);
 }
 
 /**
