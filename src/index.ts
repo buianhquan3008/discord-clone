@@ -13,7 +13,10 @@ import userRouter from './routes/user.route';
 import morgan from 'morgan';
 
 //Session clear 
-import { clearSessionExpired } from "./controllers/sessionCookeiAuth.controller"
+import { clearSessionExpired } from "./controllers/sessionCookeiAuth.controller";
+
+//express session
+import session from 'express-session'; 
 
 dotenv.config();
 
@@ -24,6 +27,12 @@ app.use(upload.array(''));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+// session-express
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}))
 
 // if you want anyone to be able to connect
 app.use(cors({ origin: true }));
