@@ -22,7 +22,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password } = req.body;
     const user = await loginService(email, password);
-    req.session.user = req.body.user;
+    req.session.user = email;
     return res.json(user);
   } catch (err) {
     next(err);
@@ -52,8 +52,11 @@ async function logout(req: Request, res: Response, next: NextFunction) {
  */
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await getAllUsersService();
-    return res.json(users);
+    if(req.session.user!=null) {
+      const users = await getAllUsersService();
+      return res.json(users);
+    }
+    else throw Error('not authorized')
   } catch (err) {
     next(err);
   }
