@@ -4,6 +4,7 @@ import { v4 } from 'uuid';
 import SessionModel, { Session } from '../models/session.model';
 import {
   getAllUsers as getAllUsersService,
+  getDetailUser as getDetailUserService,
 } from '../services/user.service';
 
 async function loginHandler(req: Request, res: Response, next: NextFunction) {
@@ -73,6 +74,50 @@ async function getAllUsersHandler(req: Request, res: Response, next: NextFunctio
   }
 }
 
+async function getDetailUserHandler(req: Request, res: Response, next: NextFunction) {
+  // if this request doesn't have any cookies, that means it isn't
+  // authenticated. Return an error code.
+  if (!req.cookies) {
+    return res.status(401).json({ error: 'not authorized: no cookie' });
+  }
+
+  // We can obtain the session token from the requests cookies, which come with every request
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    // If the cookie is not set, return an unauthorized status
+    return res.status(401).json({ error: 'not authorized: no session_token in cookei' });
+  }
+
+  // We then get the session of the user from our session map
+  // that we set in the signinHandler
+  
+  const userSession = await SessionModel.findOne({ token: sessionToken });
+  if (!userSession) {
+    // If the session token is not present in session map, return an unauthorized error
+    return res.status(401).json({ error: 'not authorized: session_token incorrect' });
+  }
+  // if the session has expired, return an unauthorized error, and delete the 
+  // session from our map
+  if (userSession.session.expiresAt < (new Date())) {
+    await SessionModel.deleteOne({ token: sessionToken })
+    return res.status(401).json({ error: 'the session has expired' })
+  }
+
+  const user = await User.findById(req.params.userId);
+
+  if (userSession.session.email != user.email) {
+    return res.status(401).json({ message: 'not authorized' })
+  }
+  // If all checks have passed, we can consider the user authenticated and
+  // send a welcome message
+  try {
+    const userDetail = await getDetailUserService(req.params.userId);
+    return res.json(userDetail);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function logoutHandler(req: Request, res: Response, next: NextFunction) {
   if (!req.cookies) {
     return res.status(401).json({ error: 'not authorized' });
@@ -113,4 +158,5 @@ export {
   getAllUsersHandler,
   logoutHandler,
   clearSessionExpired,
+  getDetailUserHandler,
 }

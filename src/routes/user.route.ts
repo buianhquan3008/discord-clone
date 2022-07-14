@@ -11,7 +11,7 @@ import {
 } from '../controllers/sessionExpressAuth.controller';
 
 // for session-cookei
-import { loginHandler, getAllUsersHandler, logoutHandler } from '../controllers/sessionCookeiAuth.controller';
+import { loginHandler, getAllUsersHandler, logoutHandler, getDetailUserHandler } from '../controllers/sessionCookeiAuth.controller';
 
 const userRouter = Router({ mergeParams: true });
 
@@ -24,6 +24,7 @@ userRouter.post('/signup', signup);
 // session basic implement
 userRouter.post('/session/login', loginHandler);
 userRouter.get('/session/users', getAllUsersHandler);
+userRouter.get('/session/user/:userId', getDetailUserHandler);
 userRouter.post('/session/logout', logoutHandler);
 
 // session with express-session
