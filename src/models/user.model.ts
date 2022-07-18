@@ -26,7 +26,12 @@ const UserSchema = new Schema(
       type: Boolean,
       required: true,
       default: false
-    }
+    },
+    // for Token-based Authentication
+    token: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
@@ -52,6 +57,7 @@ interface UserInterface extends Document {
   password: String | undefined;
   pic: String;
   isAdmin: Boolean;
+  token: String | undefined;
   checkPassword: (password: String) => Boolean;
 }
 
