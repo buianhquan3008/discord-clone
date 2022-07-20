@@ -28,10 +28,14 @@ const UserSchema = new Schema(
       default: false
     },
     // for Token-based Authentication
-    token: {
+    accessToken: {
       type: String,
       required: false,
     },
+    refreshToken: {
+      type: String,
+      required: false,
+    }
   },
   {
     timestamps: true,
@@ -47,7 +51,7 @@ UserSchema.pre('save', function (next) {
   return next();
 });
 
-UserSchema.methods.checkPassword = function (password: String) {
+UserSchema.methods.checkPassword = function (password: string) {
   return bcrypt.compareSync(password, this.password);
 };
 
@@ -57,7 +61,8 @@ interface UserInterface extends Document {
   password: String | undefined;
   pic: String;
   isAdmin: Boolean;
-  token: String | undefined;
+  accessToken: String | undefined;
+  refreshToken: String | undefined;
   checkPassword: (password: String) => Boolean;
 }
 

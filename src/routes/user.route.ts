@@ -13,10 +13,19 @@ import {
 // for session-cookei
 import { loginHandler, getAllUsersHandler, logoutHandler, getDetailUserHandler } from '../controllers/sessionCookeiAuth.controller';
 
+// for jwt
+import { 
+  login as loginJwt,
+  getAllUsers as getAllUsersJwt,
+  logout as logoutJwt,
+  refreshToken,
+} from '../controllers/tokenBasedAuthentication.controller';
+
 const userRouter = Router({ mergeParams: true });
 
 // get all users by basic auth
-userRouter.get('/users', basicAuth, getAllUsers);
+// userRouter.get('/users', basicAuth, getAllUsers);
+userRouter.get('/users', getAllUsers);
 userRouter.get('/user/:userId', validate(getDetailUserValidation), getDetailUser);
 userRouter.post('/login', login);
 userRouter.post('/signup', signup);
@@ -28,9 +37,10 @@ userRouter.get('/session/user/:userId', getDetailUserHandler);
 userRouter.post('/session/logout', logoutHandler);
 
 // session with express-session
-userRouter.post('/session-express/login', loginSessionExpress);
-userRouter.get('/session-express/users', getAllUsersSessionExpress);
-userRouter.post('/session-express/logout', logoutSessionExpress);
+userRouter.post('/jwt/login', loginJwt);
+userRouter.get('/jwt/users', getAllUsersJwt);
+userRouter.post('/jwt/refresh', refreshToken);
+userRouter.post('/jwt/logout', logoutJwt);
 
 // for Token-based Authentication
 
